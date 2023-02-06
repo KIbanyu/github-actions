@@ -1,1 +1,3 @@
-COPY --chown=node:node ./package*.json ./
+FROM ubuntu 
+MAINTAINER mkibanyu96@gmail.com 
+CMD [“echo”,”Image created”] 
