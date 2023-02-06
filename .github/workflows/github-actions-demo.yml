@@ -26,4 +26,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/mkibanyu-repo:latest
+      
+      - run: echo "Success"
  
