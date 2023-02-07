@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mkibanyu-repo:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mkibanyu-repo:"`r format(Sys.time(), '%d %B, %Y')`"
       
       - run: echo "Success"
  
