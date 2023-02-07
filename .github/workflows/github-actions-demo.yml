@@ -17,6 +17,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Build Mvn Package
+        run: mvn clean package
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
