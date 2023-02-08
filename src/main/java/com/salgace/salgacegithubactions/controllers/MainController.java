@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-@RequestMapping(value = "/api/vi")
+@RequestMapping(value = "/api/v1")
 public class MainController {
 
     @GetMapping("/greetings")
