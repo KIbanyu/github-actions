@@ -1,41 +1,35 @@
-name: Deploy to ECR
-
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
-
   push:
     branches: [ main ]
-
 jobs:
-
   build:
-
-    name: Build Image
     runs-on: ubuntu-latest
-
     steps:
-
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Build Mvn Package
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Build mvn package
         run: mvn clean package
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mkibanyu-repo:latest
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      - run: echo "Success"
 
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: github-actio-demo
-          IMAGE_TAG: github-actio-demo
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
